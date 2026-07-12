@@ -45,3 +45,20 @@
 .nav-links a:hover{
     color:#fde047;
 }
+
+.logout-btn{
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+    transform:scale(1.05);
+}

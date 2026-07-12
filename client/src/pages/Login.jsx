@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
+import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,35 +18,49 @@ function Login() {
         password,
       });
 
-      console.log(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+
       alert("Login Successful");
+
+      navigate("/");
     } catch (error) {
-      console.log(error.response?.data || error.message);
-      alert("Login Failed");
+      alert("Invalid Email or Password");
     }
   };
 
   return (
-    <div>
-      <h1>Login Page</h1>
+    <div className="login-container">
+      <div className="login-card">
+        <h1>Welcome Back 👋</h1>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
+        <p>Login to your BorrowNet account</p>
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+            required
+          />
 
-        <button type="submit">Login</button>
-      </form>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+            required
+          />
+
+          <button className="login-btn">
+            Login
+          </button>
+        </form>
+
+        <div className="register-link">
+          Don't have an account? <Link to="/register">Register</Link>
+        </div>
+      </div>
     </div>
   );
 }

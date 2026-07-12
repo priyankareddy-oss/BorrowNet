@@ -1,58 +1,72 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
+import "./Register.css";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/register", {
+      await API.post("/auth/register", {
         name,
         email,
         password,
       });
 
-      alert(res.data.message);
+      alert("Registration Successful!");
+      navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Registration Failed");
+      alert("Registration Failed");
     }
   };
 
   return (
-    <div>
-      <h1>Register Page</h1>
+    <div className="register-container">
+      <div className="register-card">
+        <h1>Create Account 🚀</h1>
+        <p>Join the BorrowNet Community</p>
 
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <br /><br />
+        <form onSubmit={handleRegister}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e)=>setName(e.target.value)}
+            required
+          />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br /><br />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br /><br />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
+            required
+          />
 
-        <button type="submit">Register</button>
-      </form>
+          <button className="register-btn">
+            Register
+          </button>
+        </form>
+
+        <div className="login-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </div>
+      </div>
     </div>
   );
 }

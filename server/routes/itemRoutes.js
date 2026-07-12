@@ -9,7 +9,7 @@ router.post("/add", async (req, res) => {
     await item.save();
 
     res.json({
-      message: "Item added successfully",
+      message: "Item Added Successfully",
       item,
     });
   } catch (error) {
@@ -33,7 +33,9 @@ router.put("/borrow/:id", async (req, res) => {
     const item = await Item.findById(req.params.id);
 
     if (!item) {
-      return res.status(404).json({ message: "Item not found" });
+      return res.status(404).json({
+        message: "Item not found",
+      });
     }
 
     item.status = "borrowed";
@@ -54,7 +56,9 @@ router.put("/return/:id", async (req, res) => {
     const item = await Item.findById(req.params.id);
 
     if (!item) {
-      return res.status(404).json({ message: "Item not found" });
+      return res.status(404).json({
+        message: "Item not found",
+      });
     }
 
     item.status = "available";
@@ -66,6 +70,29 @@ router.put("/return/:id", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE ITEM
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({
+        message: "Item not found",
+      });
+    }
+
+    await Item.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: "Item Deleted Successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
   }
 });
 
